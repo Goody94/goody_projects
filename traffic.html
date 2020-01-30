@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title>Конструктор маршрутов</title>
+	<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+	<script src="https://api-maps.yandex.ru/2.1/?apikey=28bbf49c-80f2-484f-847f-22d2502f6937&lang=ru_RU" type="text/javascript">
+    </script>
+	<script>
+	 ymaps.ready(init);
+    function init(){
+        // Создание карты.
+        window.myMap = new ymaps.Map("map", {
+            // Координаты центра карты.
+            // Порядок по умолчанию: «широта, долгота».
+            // Чтобы не определять координаты центра карты вручную,
+            // воспользуйтесь инструментом Определение координат.
+            center: [55.76, 37.64],
+            // Уровень масштабирования. Допустимые значения:
+            // от 0 (весь мир) до 19.
+            zoom: 8
+        });
+    }
+	$(function(){
+		$('#foundCityButton').on('click', function()
+		{
+			var cityName = $('#cityName').val();
+			var geoCoder = ymaps.geocode(cityName);
+			geoCoder.then(function(response)
+			{
+				var geoObject = response.geoObjects.get(0);
+				var coords = geoObject.geometry._coordinates;
+				window.myMap.setCenter(coords, 8);
+			});
+		});
+	});
+	</script>
+</head>
+<body>
+	<h1>Конструктор туристических маршрутов</h1>
+	<div>
+		<b>Введите название города:</b>
+		<input type="text" name="" id="cityName">
+		<input type="button" name="" id="foundCityButton" value="Найти">
+		<br><br><br>
+		<div id="map" style="width: 600px; height: 400px"></div>
+	</div>
+</body>
+</html>
